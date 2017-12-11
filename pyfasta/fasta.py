@@ -3,9 +3,8 @@ import string
 import os.path
 from collections import Mapping
 import sys
-import numpy as np
 
-from records import NpyFastaRecord
+from records import np, DefaultRecord
 
 # string.maketrans is bytes.maketrans in Python 3, but
 # we want to deal with strings instead of bytes
@@ -40,7 +39,7 @@ class DuplicateHeaderException(Exception):
         Exception.__init__(self, 'headers must be unique: %s is duplicated' % header)
 
 class Fasta(Mapping):
-    def __init__(self, fasta_name, record_class=NpyFastaRecord,
+    def __init__(self, fasta_name, record_class=DefaultRecord,
                 flatten_inplace=False, key_fn=None):
         """
             >>> from pyfasta import Fasta, FastaRecord

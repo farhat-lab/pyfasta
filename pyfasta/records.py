@@ -1,9 +1,20 @@
 import cPickle
-import numpy as np
 import sys
 import os
 
-__all__ = ['FastaRecord', 'NpyFastaRecord', 'MemoryRecord']
+try:
+    import numpy as np
+except ImportError as err:
+    class NotAvailable:
+        def __getattr__(self, key):
+            raise err
+        def __nonzero__(self):
+            return False
+        def __bool__(self):
+            return False
+    np = NotAvailable()
+
+__all__ = ['FastaRecord', 'NpyFastaRecord', 'MemoryRecord', 'DefaultRecord']
 
 MAGIC = "@flattened@"
 
@@ -293,3 +304,9 @@ try:
     __all__.append('TCRecord')
 except ImportError:
     pass
+
+if np:
+    DefaultRecord = NpyFastaRecord
+else:
+    DefaultRecord = MemoryRecord
+
